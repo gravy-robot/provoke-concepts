@@ -162,28 +162,6 @@ p, li, h2, h3 { text-wrap: pretty; }
 
 footer { margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
 footer p { max-width: 70ch; }
-
-/* Overnote review layer: theme it with page tokens; the Export/Import controls sit in the footer. */
-:root {
-  --overnote-font: var(--body);
-  --overnote-accent: var(--green);
-  --overnote-accent-contrast: var(--bg);
-  --overnote-mode-highlight: var(--rust);
-  --overnote-mode-sticky: var(--pink);
-  --overnote-surface: var(--surface);
-  --overnote-surface-muted: var(--bg);
-  --overnote-text: var(--ink);
-  --overnote-text-muted: var(--muted);
-  --overnote-border: var(--line);
-}
-.review-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
-.review-tools button {
-  font: 500 12px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase;
-  background: none; color: var(--ink); border: 1px solid var(--line); padding: 8px 10px; cursor: pointer;
-}
-.review-tools button:hover { border-color: var(--ink); }
-.review-tools button:focus-visible { outline: 2px solid var(--pink); outline-offset: 2px; }
-.review-tools__status { font-size: 13px; }
 </style>
 
 <div class="wrap">
@@ -334,4 +312,3 @@ footer p { max-width: 70ch; }
   });
 })();
 </script>
-<script type="module" src="js/annotate.js"></script>
