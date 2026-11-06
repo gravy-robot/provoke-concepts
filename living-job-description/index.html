@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Living Job Description</title>
+<meta name="description" content="An invented future: a speculative feature about a fictional role-charter device. The product, company and people are fiction. The cited research is real.">
+<meta property="og:title" content="The Job Description Is Now a Living Thing (invented future)">
+<meta property="og:description" content="An invented future: a speculative feature about a fictional role-charter device. The product, company and people are fiction. The cited research is real.">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+/* Layout: one reading column, marginal fact-labels in the left rail, wide plates that break out of the column.
+   Identity: pink means invented, green means real, and that code runs through the whole page. */
+:root {
+  --bg: #FDFCF7; --surface: #FFFFFF; --fg: #181613; --muted: #5A5650; --line: #E7E1D0;
+  --band: #181613; --band-fg: #FDFCF7; --band-muted: #B9B3A6;
+  --real: #1C6B4E; --real-fill: #1C6B4E; --real-on: #FFFFFF; --real-on-band: #7FD6AE;
+  --invented: #B3185A; --invented-fill: #E93B7A; --invented-on: #181613; --invented-on-band: #FF8DB6;
+  --gold: #F4C21B; --rust: #8E2B22; --brass: #C9A24B; --plate: #D9D4C7; --plate-slot: #2A2722;
+  --display: "Hanken Grotesk", Archivo, "Helvetica Neue", Arial, sans-serif;
+  --body: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15130F; --surface: #1F1C17; --fg: #F3EFE4; --muted: #ADA79A; --line: #3A352C;
+    --band: #0C0B09; --real: #7FD6AE; --invented: #FF8DB6; --brass: #D8B35E; --plate: #4A463E; --plate-slot: #0C0B09;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15130F; --surface: #1F1C17; --fg: #F3EFE4; --muted: #ADA79A; --line: #3A352C;
+  --band: #0C0B09; --real: #7FD6AE; --invented: #FF8DB6; --brass: #D8B35E; --plate: #4A463E; --plate-slot: #0C0B09;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 1.225rem; line-height: 1.58; overflow-x: clip; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--invented-fill); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* The fiction band stays on screen for the whole read */
+.fiction-band { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--invented-fill); color: var(--invented-on); font: 600 .74rem/1.35 var(--mono); letter-spacing: .03em; text-align: center; padding-block: .5rem; }
+.fiction-band b { font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+
+/* Masthead and opener */
+.opener { background: var(--band); color: var(--band-fg); padding-block: 1rem 0; }
+.mast { max-width: 1180px; margin-inline: auto; display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: baseline; justify-content: space-between; border-bottom: 1px solid #4A463E; padding-bottom: .8rem; }
+.logo { font: 900 2.1rem/1 var(--display); letter-spacing: -.045em; }
+.logo i { font-style: normal; color: var(--gold); }
+.mast p { margin: 0; font: 400 .72rem/1.4 var(--mono); letter-spacing: .05em; color: var(--band-muted); }
+.opener-grid { max-width: 1180px; margin-inline: auto; display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); gap: 2.5rem; align-items: end; padding-top: 2.6rem; }
+.opener-text { min-width: 0; padding-bottom: 3rem; }
+.kicker { font: 500 .74rem/1.3 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin: 0 0 1rem; }
+h1 { font-weight: 900; font-size: clamp(2.7rem, 6.9vw, 5.6rem); line-height: .95; letter-spacing: -.04em; }
+.dek { font: 500 clamp(1.1rem, 1.8vw, 1.35rem)/1.34 var(--display); color: var(--band-fg); margin: 1.3rem 0 0; max-width: 34em; }
+.byline { font: 400 .74rem/1.5 var(--mono); color: var(--band-muted); margin: 1.2rem 0 0; }
+.hero-fig { margin: 0 0 -5.5rem; position: relative; z-index: 2; min-width: 0; }
+.hero-fig img { width: 100%; height: auto; }
+
+/* An image can be screenshotted away from the page, so the label lives on the image */
+.concept-stamp { position: absolute; left: .7rem; bottom: .7rem; background: var(--band); color: var(--band-fg); font: 500 .62rem/1.3 var(--mono); letter-spacing: .07em; text-transform: uppercase; padding: .3rem .5rem; }
+.concept-stamp b { color: var(--invented-on-band); font-weight: 600; }
+
+/* Read-this-first panel */
+.first { max-width: 1180px; margin-inline: auto; padding-top: 7.5rem; }
+.ledger { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 3px solid var(--fg); border-bottom: 1px solid var(--line); }
+.ledger > div { min-width: 0; padding: 1.15rem 1.4rem 1.3rem 0; }
+.ledger > div + div { padding-left: 1.4rem; padding-right: 0; border-left: 1px solid var(--line); }
+.ledger h2 { display: flex; gap: .6rem; align-items: center; font-size: 1.28rem; font-weight: 800; letter-spacing: -.02em; }
+.ledger p { font: 400 .98rem/1.48 var(--display); margin: .5rem 0 0; color: var(--muted); }
+.tag { display: inline-block; font: 600 .63rem/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; padding: .3rem .42rem; white-space: nowrap; vertical-align: .16em; }
+.tag.inv { background: var(--invented-fill); color: var(--invented-on); }
+.tag.real { background: var(--real-fill); color: var(--real-on); }
+
+/* Reading column */
+.story { max-width: 680px; margin-inline: auto; padding-block: 2.8rem 1rem; }
+.story p { margin: 0 0 1.15em; }
+.story > .lead::first-letter { font: 900 4.5em/.82 var(--display); float: left; padding: .06em .08em 0 0; color: var(--rust); }
+.story h2 { font-size: clamp(1.8rem, 3.7vw, 2.5rem); font-weight: 900; line-height: 1.03; letter-spacing: -.03em; margin: 2.3em 0 .6em; }
+.story h3 { font-size: 1.28rem; font-weight: 800; letter-spacing: -.015em; margin: 1.9em 0 .45em; }
+.story a { color: var(--real); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.story a:hover { color: var(--invented); }
+.story ul { margin: 0 0 1.2em; padding: 0; list-style: none; display: grid; gap: .8rem; }
+.story li { padding-left: 1.05rem; border-left: 3px solid var(--line); }
+em.charter { font-style: italic; }
+
+/* Margin notes: left rail on wide screens, inline on narrow ones */
+.note { font: 400 .78rem/1.42 var(--mono); color: var(--muted); margin: 0 0 1.1rem; }
+.note .tag { display: table; margin-bottom: .36rem; }
+@media (min-width: 1120px) { .note { float: left; clear: left; width: 180px; margin: .25rem 0 1rem -220px; } }
+
+/* Pull quotes */
+.pull { margin: 2rem 0; padding: 0; }
+.pull p { font: 800 clamp(1.5rem, 3.3vw, 2.05rem)/1.12 var(--display); letter-spacing: -.024em; margin: 0 0 .55rem; text-wrap: balance; }
+.pull footer { font: 400 .74rem/1.4 var(--mono); color: var(--muted); }
+
+/* Wide plates */
+.wide { width: min(1120px, calc(100vw - 32px)); margin: 2.6rem 0 2.6rem 50%; transform: translateX(-50%); }
+.plate-fig { margin: 0; }
+.plate-fig .frame { position: relative; }
+.plate-fig img { width: 100%; height: auto; }
+figcaption { font: 400 .78rem/1.45 var(--mono); color: var(--muted); padding-top: .55rem; }
+
+/* Diagram: three motions */
+.motions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+.motion { min-width: 0; }
+.motion svg { width: 100%; height: auto; display: block; }
+.motion h3 { margin: .55rem 0 .25rem; }
+.motion p { margin: 0; font: 400 1rem/1.45 var(--display); color: var(--muted); }
+
+/* Try it */
+.bench { background: var(--band); color: var(--band-fg); padding-block: 2.2rem 2.4rem; }
+.bench-in { max-width: 860px; margin-inline: auto; }
+.bench h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); font-weight: 900; letter-spacing: -.03em; line-height: 1.04; margin-bottom: .4rem; }
+.bench > .bench-in > p { font: 400 1.02rem/1.45 var(--display); color: var(--band-muted); margin: 0 0 1.3rem; max-width: 40em; }
+.scale { display: flex; justify-content: space-between; font: 500 .68rem/1 var(--mono); letter-spacing: .1em; color: var(--band-muted); margin-bottom: .55rem; }
+input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 56px; background: transparent; margin: 0; cursor: grab; display: block; }
+input[type=range]::-webkit-slider-runnable-track { height: 8px; background: #4A463E; }
+input[type=range]::-moz-range-track { height: 8px; background: #4A463E; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 66px; height: 44px; margin-top: -18px; background: var(--rust); border: 0; box-shadow: inset 0 -5px 0 rgba(0,0,0,.28); }
+input[type=range]::-moz-range-thumb { width: 66px; height: 44px; background: var(--rust); border: 0; border-radius: 0; box-shadow: inset 0 -5px 0 rgba(0,0,0,.28); }
+.track-name { font: 500 .72rem/1.3 var(--mono); letter-spacing: .06em; margin: 0; }
+.stud-row { display: flex; flex-wrap: wrap; gap: .9rem; align-items: center; margin-top: 1.1rem; }
+.bench button { font: 600 .78rem/1 var(--mono); letter-spacing: .03em; padding: .75rem .9rem; border: 0; cursor: pointer; background: var(--gold); color: #181613; }
+.bench button.ghost { background: transparent; color: var(--band-fg); box-shadow: inset 0 0 0 1px #6B665B; }
+.bench button[disabled] { opacity: .45; cursor: default; }
+.readout { font: 500 .86rem/1.45 var(--mono); color: var(--gold); margin: 1.1rem 0 0; min-height: 2.9em; }
+
+/* Six brass bricks */
+.brass-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border-top: 3px solid var(--brass); border-bottom: 1px solid var(--line); }
+.brass { background: var(--bg); padding: 1rem 1.05rem 1.15rem; min-width: 0; }
+.brass h3 { margin: 0 0 .3rem; font-size: 1.1rem; font-weight: 800; letter-spacing: -.015em; line-height: 1.15; }
+.brass p { margin: 0; font: 400 .92rem/1.42 var(--display); color: var(--muted); }
+.brass p + p { margin-top: .5rem; color: var(--fg); }
+.brass a { color: var(--real); text-underline-offset: 2px; }
+
+/* End matter */
+.end { background: var(--band); color: var(--band-fg); padding-block: 2.8rem 3rem; margin-top: 3rem; }
+.end-in { max-width: 1120px; margin-inline: auto; }
+.end h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 900; letter-spacing: -.03em; line-height: 1.03; margin-bottom: .5rem; }
+.end-lede { font: 400 1.02rem/1.45 var(--display); color: var(--band-muted); max-width: 44em; margin: 0 0 1.8rem; }
+.sources { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.8rem 2.6rem; }
+.sources section { min-width: 0; }
+.sources h3 { font: 500 .72rem/1.3 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--real-on-band); margin-bottom: .6rem; }
+.sources ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; font: 400 .92rem/1.38 var(--display); }
+.sources a { color: var(--band-fg); text-decoration-color: var(--real-on-band); text-underline-offset: 3px; }
+.colophon { margin: 2.2rem 0 0; padding-top: 1rem; border-top: 1px solid #4A463E; font: 400 .74rem/1.55 var(--mono); color: var(--band-muted); }
+.colophon b { color: var(--invented-on-band); font-weight: 600; }
+
+@media (max-width: 860px) {
+  .opener-grid { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 1.8rem; }
+  .opener-text { padding-bottom: 1.6rem; }
+  .hero-fig { margin-bottom: -3.5rem; }
+  .first { padding-top: 5.2rem; }
+  .sources { grid-template-columns: minmax(0, 1fr); }
+  .brass-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  body { font-size: 1.14rem; }
+  .ledger { grid-template-columns: minmax(0, 1fr); }
+  .ledger > div { padding-right: 0; }
+  .ledger > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+  .motions { grid-template-columns: minmax(0, 1fr); }
+  .brass-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-fig img { animation: settle .7s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes settle { from { transform: translateY(14px); } to { transform: none; } }
+}
+</style>
+</head>
+<body>
+
+<div class="fiction-band gutter"><b>Invented future</b> · The product, company and people here are fiction. The cited research is real.</div>
+
+<header class="opener gutter">
+  <div class="mast">
+    <div class="logo">Not<i>/</i>Yet</div>
+    <p>An invented magazine from an invented future · Feature · Work</p>
+  </div>
+  <div class="opener-grid">
+    <div class="opener-text">
+      <p class="kicker">The Future of Work / Hardware</p>
+      <h1>The Job Description Is Now a Living Thing</h1>
+      <p class="dek">A Swedish hardware house, LEGO's boardroom method, the best thinking on letting go at work and a consultancy with a gravy-boat robot walk into the org chart. They come out with a desk object that admits your role is already out of date.</p>
+      <p class="byline">Story by an invented contributor. Concept by Gravy Robot, as a working-backwards exercise.</p>
+    </div>
+    <figure class="hero-fig">
+      <img src="assets/plate-console.jpg" alt="Concept image of the imagined RC-1 Role Charter: an aluminum slab with eight fader tracks carrying colored studded bricks, six fixed brass bricks along the bottom, a receipt printer, and a small enamel gravy-boat robot holding a spoon." width="1312" height="1199">
+      <span class="concept-stamp"><b>Invented product</b> · AI-generated concept image</span>
+    </figure>
+  </div>
+</header>
+
+<aside class="first gutter" aria-label="What is real and what is invented">
+  <div class="ledger">
+    <div>
+      <h2><span class="tag inv">Invented</span> The story</h2>
+      <p>The Plate, its partnership, Larkfield Workwear and everyone quoted at Larkfield do not exist. Teenage Engineering, LEGO, Molly Graham and Adam Grant have no involvement and have endorsed nothing. They appear only through their published work, and no quotes are invented for them. Not/Yet is not a real publication. Laura Kirkwood's quote is a draft for her to rewrite or approve.</p>
+    </div>
+    <div>
+      <h2><span class="tag real">Real</span> The evidence</h2>
+      <p>Every green link goes to a real paper, report or article, and the numbers come from those sources. The arguments the story draws from them are the concept's own. Look for these two labels through the piece, and for the full source list at the end.</p>
+    </div>
+  </div>
+</aside>
+
+<main class="story gutter">
+
+  <p class="lead">At 8:52 on a wet Tuesday morning, Renee Okafor sat down at her desk and found that part of her job had moved in the night. She could see exactly how far: about four centimeters.</p>
+
+  <p>The part was a small rust-red brick labeled SUPPLIER VERIFICATION. It rides on a motorized fader, the kind you'd find on a studio mixing desk. Overnight, an agent had earned enough of that work to slide it toward the far edge of the board. Okafor, who has sourced fabric for 22 years, looked at it for a moment, frowned, and pushed it back.</p>
+
+  <p>That push is the whole product.</p>
+
+  <h2>The last honest job description</h2>
+
+  <p>The job description may be the least accurate document in corporate life. It is written once, usually in a hurry, to describe a job as it existed a few months before anyone was hired to do it. Then it goes into a drawer while the actual work wanders off.</p>
+
+  <aside class="note"><span class="tag real">Real</span>World Economic Forum, 2025. Stanford Digital Economy Lab, revised August 2026.</aside>
+
+  <p>That was merely funny until agents arrived. Employers now expect <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/3-skills-outlook">39 percent of workers' core skills to change by 2030</a>, according to the World Economic Forum. Stanford's Digital Economy Lab, in an <a href="https://digitaleconomy.stanford.edu/publications/canaries-in-the-coal-mine">August revision of its "Canaries" paper</a>, finds no widespread job displacement across the economy. But employment of 22- to 25-year-olds in AI-exposed occupations now sits 19 percent below where it would be had it tracked their less-exposed peers, mostly because fewer are being hired. The authors are careful to call that an early indicator, not a causal estimate.</p>
+
+  <p>Read together, those findings describe a quiet rearrangement more than a mass replacement. Work is moving task by task, inside jobs that keep the same title, and almost nothing in the organization records the move. The promotion rubric doesn't. The org chart doesn't. The person doing the job often finds out by noticing that a Tuesday has gotten strangely easy, or strangely empty.</p>
+
+  <p>The RC-1 Role Charter, which everyone who owns one calls the Plate, is an attempt to make that rearrangement visible, negotiable and a little bit physical. It starts from a blunt premise printed on the box: <em class="charter">The job you have now won't be the job you have in two years. We should probably talk about that.</em></p>
+
+  <h2>A mixing desk for your job</h2>
+
+  <p>Put a Plate on a desk and it reads as a musical instrument that wandered into HR. It is a slab of bead-blasted aluminum about the size of a laptop, with eight motorized faders running side to side. Each fader carries a studded carriage, and each carriage holds one brick. One brick is one chunk of your work, and you name it yourself in tiny stamped letters.</p>
+
+  <p>The left end of each track is marked MINE. The middle is TOGETHER. The right end is HANDED OFF. Glance at the board and you can read your job the way an engineer reads a mix: what's up, what's fading out, what's being shared.</p>
+
+  <p>Along the bottom edge sits a row that doesn't move at all. Six heavy brass bricks are screwed to the chassis, one for each kind of knowledge the makers argue agents lack: tacit, experiential, inalienable, organizational, relational and value-based. They have no faders and no route to the right-hand side. They're the only parts of the Plate that are meant to feel permanent.</p>
+
+  <h3>The charter behind the board</h3>
+
+  <p>The hardware is the visible half. The Plate is paired with a Role Charter, a version-controlled document that replaces the job description. Every change is a commit, recording who proposed it, who agreed and what evidence they used. A thermal printer on the Plate's top edge spits out the monthly diff on narrow receipt paper, so the change arrives as an object you have to deal with.</p>
+
+  <p>The charter starts on day one. Every job posting written with it carries a half-life clause: <em class="charter">We expect at least half of this role to look different within two years. You'll help decide how. This document will be rewritten with you every quarter, and your agreement is required.</em></p>
+
+  <h3>Push, pull, and the empty stud</h3>
+
+  <p>The system runs on three motions, and the third is the one that makes the Plate more than a very expensive to-do list.</p>
+
+  <div class="wide motions" role="group" aria-label="The three motions of the Plate">
+    <div class="motion">
+      <svg viewBox="0 0 300 92" role="img" aria-label="A brick moves right along a track as an agent proposes taking it over."><rect x="4" y="44" width="292" height="5" fill="var(--line)"/><rect x="140" y="26" width="52" height="40" fill="var(--real-fill)"/><path d="M204 46h66m-11-10 11 10-11 10" fill="none" stroke="var(--fg)" stroke-width="3"/></svg>
+      <h3>The push</h3>
+      <p>With the employee's permission, the Charter reads logs from their agents. When an agent has done a chunk of work reliably enough, its fader creeps right. That's a proposal, not a decision. Nothing is final until a human hand lets it stay.</p>
+    </div>
+    <div class="motion">
+      <svg viewBox="0 0 300 92" role="img" aria-label="A brick is dragged left along the track, back toward the person."><rect x="4" y="44" width="292" height="5" fill="var(--line)"/><rect x="108" y="26" width="52" height="40" fill="var(--rust)"/><path d="M96 46H30m11-10-11 10 11 10" fill="none" stroke="var(--fg)" stroke-width="3"/></svg>
+      <h3>The pull</h3>
+      <p>Anyone can drag a brick back, and they don't have to justify it to a machine. They can pull it back for quality or for pleasure. They can also mark it KEEP SHARP, keeping the work on purpose for the day the agent fails.</p>
+    </div>
+    <div class="motion">
+      <svg viewBox="0 0 300 92" role="img" aria-label="A brick stops short of the end of its track until a new brick lands on an empty stud."><rect x="4" y="30" width="292" height="5" fill="var(--line)"/><rect x="218" y="12" width="52" height="40" fill="var(--brass)"/><rect x="274" y="10" width="4" height="44" fill="var(--fg)"/><rect x="4" y="76" width="292" height="5" fill="var(--line)"/><g fill="none" stroke="var(--invented)" stroke-width="2" stroke-dasharray="4 3"><rect x="24" y="60" width="52" height="30"/></g></svg>
+      <h3>The empty stud</h3>
+      <p>No brick can lock at HANDED OFF until a new one lands on an open track: EXTEND, for work you couldn't do before agents, or GROW, for a responsibility you've never held.</p>
+    </div>
+  </div>
+
+  <p>That third rule is a design opinion in aluminum. It treats an automated task as a promise to say what comes next. It also gives a role three ways to change other than shrinking: collaboration, extension and growth.</p>
+
+</main>
+
+<section class="bench gutter" aria-labelledby="bench-h">
+  <div class="bench-in">
+    <p class="kicker">Try the rule / invented mechanism</p>
+    <h2 id="bench-h">Drag the brick all the way right</h2>
+    <p>This is how the empty stud would behave. The brick stops short of HANDED OFF until something new has landed on the board.</p>
+    <p class="track-name"><label for="brick-range">DOCUMENT CHASING</label></p>
+    <input type="range" id="brick-range" min="0" max="100" value="46" aria-describedby="readout">
+    <div class="scale" aria-hidden="true"><span>MINE</span><span>TOGETHER</span><span>HANDED OFF</span></div>
+    <div class="stud-row">
+      <button type="button" id="grow-btn">Stamp a GROW brick: HARD CONVERSATIONS</button>
+      <button type="button" class="ghost" id="reset-btn">Reset</button>
+    </div>
+    <p class="readout" id="readout" aria-live="polite">Status: shared with the agent.</p>
+  </div>
+</section>
+
+<div class="story gutter" style="padding-top:.4rem">
+
+  <h3>Rituals, in a building with no spare time</h3>
+
+  <p>Once a quarter comes the Reset: 45 minutes, a manager, one peer, no laptops and a tub of loose bricks. Everyone builds a model of what the role is turning into, then explains the model instead of themselves. A brick that crosses for good gets a Send-off, a few minutes in which its owner says what the work taught them before the brick goes into a small drawer in the base. The title can change too. At each Reset you can stamp a new one, in your own words.</p>
+
+  <p>At the top of the board stands a thumb-high enamel figure shaped like a gravy boat, with one lens and a tiny spoon. When a handed-off job comes back for review, it tips the spoon toward you and the display reads: <em class="charter">Made the gravy. Needs you.</em></p>
+
+  <h2>Why these five</h2>
+
+  <p>The partnership sounds like a dare, and each part of it covers something the others can't.</p>
+
+  <aside class="note"><span class="tag inv">Invented</span>This partnership doesn't exist. The work described below does.</aside>
+
+  <p>Teenage Engineering knows how to make a serious tool feel like a toy you can't put down. Its <a href="https://glitchwire.pages.dev/news/teenage-engineerings-ep-136-ko-sidekick-turns-your-sampler-setup-into-a-modular/article.md">EP Pegs</a> already snap its samplers together with LEGO-compatible connectors. And it <a href="https://djmag.com/tech/teenage-engineering-announces-plans-stop-making-synthesisers">reportedly plans to move away from making synthesizers</a>, so it knows something about changing what you do without changing who you are.</p>
+
+  <p>LEGO supplies the two halves of its own history. <a href="https://wikipedia.com/wiki/Lego_Serious_Play">Serious Play</a> is the build-first facilitation method that gives the Reset its shape. Mindstorms, the programmable-brick line <a href="https://www.brothers-brick.com/tag/mindstorms/">retired at the end of 2022</a>, supplies the idea that a brick can have behavior.</p>
+
+  <p>The emotional design comes straight from Molly Graham's 2015 essay <a href="https://review.firstround.com/give-away-your-legos-and-other-commandments-for-scaling-startups/">"Give Away Your Legos,"</a> which argued that handing off work you built brings real anxiety, and that normalizing it is a leader's job. The empty stud is that essay's advice to go find the next tower, made mechanical. The Send-off borrows from her more recent argument that big changes <a href="https://www.theready.com/podcast/episodes/awwtr57-grief-identity-and-change-at-work-with-molly-graham">need a "funeral"</a> before people can move on.</p>
+
+  <p>The stamped title comes from research co-authored by Adam Grant, which found that people who <a href="https://wpa.wharton.upenn.edu/content/academic-papers/self-reflective-titles/">wrote their own job titles</a> reported less emotional exhaustion. There's a neat coincidence here too: Graham took over the WorkLife podcast from Grant, so even the project's intellectual lineage includes a handed-off Lego.</p>
+
+  <p>Gravy Robot is the least famous name on the box, and it did the least glamorous work: sitting with people to get the unwritten job out of them. The firm calls this scraping the pan. Before a single fader moves, its method surfaces what's stuck to the bottom of a role, like who you call, what you check twice and what you've never written down. Its working thesis is printed inside the lid: <em class="charter">There's still no recipe for people, futures, or change.</em></p>
+
+  <blockquote class="pull">
+    <p>"People can live with a job that changes. What wears them down is finding out by accident."</p>
+    <footer><span class="tag inv">Draft quote</span> Laura Kirkwood, cofounder, Gravy Robot. Pending her approval.</footer>
+  </blockquote>
+
+  <p>"I've sat with teams through acquisitions and leadership changes, and the org chart is always the last thing to tell the truth," Kirkwood says.</p>
+
+  <h2>What happened at Larkfield</h2>
+
+  <div class="wide">
+    <figure class="plate-fig">
+      <div class="frame">
+        <img src="assets/reset-session.jpg" alt="Concept image of an imagined Reset session: three pairs of hands around the slider console on a worn table. One presses a rust-red brick left, one places a gold brick, one opens a drawer of retired bricks, with fabric swatches on the wall behind." width="1402" height="1122">
+        <span class="concept-stamp"><b>Invented scene</b> · AI-generated concept image</span>
+      </div>
+      <figcaption>A quarterly Reset, as imagined: one hand pulls a brick back, one lands a new one, and one retires an old brick to the drawer.</figcaption>
+    </figure>
+  </div>
+
+  <aside class="note"><span class="tag inv">Invented</span>Larkfield Workwear and its staff are fictional.</aside>
+
+  <p>Larkfield Workwear is a 340-person certified B Corp in northern Ohio, which is a long way from Stockholm. It has doubled in size in three years. It put 61 Plates into sourcing and customer care last spring, after its board asked a question nobody could answer: what, exactly, do our people do now?</p>
+
+  <p>Okafor pushes back on about one proposal in four. "Not because the agent's wrong," she says. "The audit's fine. I just know the dye house has been 'temporarily' idle since March, and that isn't in any feed. The numbers on that certificate are true and they're about to stop being true."</p>
+
+  <p>She lets plenty go, too. The brick marked DOCUMENT CHASING crossed in June and she didn't hold a Send-off for it. "I'd have thrown a party, but I was busy," she says. In its place she stamped a GROW brick that reads HARD CONVERSATIONS, for the mill owners she now has time to visit before a relationship goes bad.</p>
+
+  <p>Dana Whitfield, who runs operations, budgeted 45 minutes for her first Reset. It took two hours. "I've been doing performance reviews for 19 years, and I've never once asked someone what part of the job they'd miss," she says. "You can't say 'it's just a report' to a guy who's been doing that report since 2014 and has opinions about the footnotes."</p>
+
+  <p>That guy is Marcus Bell, a compliance analyst, and he's still not sold. "My first reaction was that this is a very cute way to watch me lose my job," he says. He made the company put two things in writing before he'd plug his in: the board's data belongs to the person holding the role, and no fader position feeds a headcount model. Then he held a Send-off for his quarterly report and brought donuts. "I'm not saying I like it," he says. "I'm saying it's the first time anybody asked."</p>
+
+  <blockquote class="pull">
+    <p>"Half the stuff that taught Renee everything she knows is on the far side of the board now. So how do I get to be Renee?"</p>
+    <footer><span class="tag inv">Invented</span> Tomás Villanueva, 24, customer care, Larkfield Workwear</footer>
+  </blockquote>
+
+  <p>The sharpest critique came from the youngest person in the room. Tomás Villanueva joined customer care 14 months ago and noticed that his colleagues' faders were moving toward the same right-hand edge where he'd have learned the job.</p>
+
+  <p>His question produced the only feature Larkfield added itself, the Apprentice brick. A junior employee keeps a piece of work the agent could do, then compares their answer against the agent's and a senior colleague's. It's slower on purpose. At his last Reset, Villanueva retired the title Customer Care Representative and stamped a new one: Bad News Translator.</p>
+
+  <h2>The science under the bricks</h2>
+
+  <aside class="note"><span class="tag real">Real</span>Everything cited in this section is published research.</aside>
+
+  <p>The Plate is a novelty. The ideas inside it mostly aren't, and they point in the same direction: jobs are bundles of tasks, the bundles are moving, and the people inside them do better when they have a hand on the move.</p>
+
+  <p>The oldest of those ideas is job crafting. In 2001, Amy Wrzesniewski and Jane Dutton <a href="https://cdn.shopify.com/s/files/1/0813/8179/files/Wrzesniewski_Dutton_2001.pdf">argued that employees actively reshape</a> the task and relational boundaries of their jobs, quietly creating different jobs within the ones they were given. A <a href="https://www.mentorcoach.com/wp-content/uploads/2021/02/Rudolph-Katz-Lavigne-Zacher-2017-job-crafting-meta-analysis-due-by-week-5.pdf">2017 meta-analysis</a> of 122 samples and nearly 36,000 workers examined how crafting relates to job characteristics and work outcomes. The Plate takes something people have always done in private and puts it on the desk.</p>
+
+  <p>The title stamp has unusually direct support. In <a href="https://wpa.wharton.upenn.edu/content/academic-papers/self-reflective-titles/">a field quasi-experiment</a> at a health care system, Adam Grant, Justin Berg and Daniel Cable found that employees who created self-reflective titles reported less emotional exhaustion five weeks later, while two control groups didn't.</p>
+
+  <p>The push-and-pull mechanic maps closely onto Stanford's <a href="https://arxiv.org/pdf/2506.06576v3">WORKBank audit</a> of 1,500 workers and 844 tasks. Workers felt positively about automation for 46.1 percent of tasks, mostly to free up time for higher-value work. But equal partnership was the dominant preference in 45.2 percent of occupations, and workers generally wanted more human agency than AI experts considered technically necessary. The authors warn that this gap may foreshadow friction. A fader is one way to make that friction productive.</p>
+
+  <p>Harvard's <a href="https://www.nber.org/papers/w33641">field experiment at Procter &amp; Gamble</a> explains the TOGETHER zone. Individuals using AI matched the performance of two-person teams without it, and AI blurred the line between R&amp;D and commercial thinking. Collaboration with agents is an actual state of a job, then, not a waypoint on the road to HANDED OFF.</p>
+
+  <h3>The six brass bricks</h3>
+
+  <p>The brass row is the product's boldest claim, so it's worth checking. Each brick has a real research lineage, though the row as a whole is an argument and not an established taxonomy.</p>
+
+  <div class="wide brass-grid">
+    <article class="brass"><h3>Tacit and intuitive</h3><p>What you can do but can't fully explain.</p><p>Michael Polanyi's "we can know more than we can tell," which <a href="https://www.nber.org/papers/w20485">David Autor applied to automation</a>.</p></article>
+    <article class="brass"><h3>Experience-based</h3><p>Skill built by doing the work, including when it goes wrong.</p><p>Lisanne Bainbridge's <a href="https://fermatslibrary.com/p/028c7a80">"Ironies of Automation"</a>: unused skills decay, and later generations may never build them.</p></article>
+    <article class="brass"><h3>Inalienable</h3><p>What can't be separated from the person who holds it.</p><p>Oliver Hart and John Moore on <a href="https://hart.scholars.harvard.edu/publications/theory-debt-based-inalienability-human-capital">the inalienability of human capital</a>, borrowed loosely from contract theory.</p></article>
+    <article class="brass"><h3>Organizational memory and ground truth</h3><p>How things really work here, and what's true today.</p><p>James Walsh and Gerardo Ungson's <a href="https://en.wikiquote.org/wiki/Organizational_memory">organizational memory</a>, <a href="https://kmt.helpjuice.com/organizational-memory-and-knowledge">spread across people, culture, routines, structures and workplaces</a>.</p></article>
+    <article class="brass"><h3>Relational and social-emotional</h3><p>Trust, respect and knowing who needs to hear what.</p><p>Jody Hoffer Gittell's <a href="https://heller.brandeis.edu/relational-coordination/about-rc/theory-performance.html">relational coordination</a>: shared goals, shared knowledge, mutual respect.</p></article>
+    <article class="brass"><h3>Value-based strategic judgment</h3><p>Deciding what matters and what a trade-off is worth.</p><p>Ajay Agrawal, Joshua Gans and Avi Goldfarb, who <a href="https://www.nber.org/books-and-chapters/economics-artificial-intelligence-agenda/prediction-judgment-and-complexity-theory-decision-making-and-artificial-intelligence">separate prediction from judgment</a> about payoffs.</p></article>
+  </div>
+
+  <p>WORKBank offers some support for the row as a whole. Compared against wages, the audit's rankings <a href="https://arxiv.org/pdf/2506.06576v3">suggest a shift from information-processing skills toward interpersonal and organizational ones</a>. That's about where the brass sits.</p>
+
+  <p>Bainbridge deserves the last word here, because her 1983 paper is the reason KEEP SHARP exists. A system that takes over the routine work leaves people to handle the rare, hard exceptions while their practice fades. It's also the strongest case for Villanueva's Apprentice brick, and a reason to take Stanford's 19 percent figure seriously even with its caveats.</p>
+
+  <h2>What the Plate can't fix</h2>
+
+  <p>The premise on the box is stronger than the evidence. "Completely different in two years" is a provocation, not a finding. The World Economic Forum's figure is 39 percent of core skills by 2030, which is a lot, but it isn't all of them, and it isn't two years. Stanford's newest data shows no broad displacement. The makers would say the provocation is the point, since a half-life clause gets people talking in a way a footnote doesn't. That's probably right, and it's still marketing.</p>
+
+  <p>The brass row has an expiry problem too. Autor noted back in 2014 that computer science was already <a href="https://www.nber.org/papers/w20485">trying to get around Polanyi's paradox</a> by having machines learn from human examples. Some of what's tacit today will be inferred tomorrow. The designers seem to know this. Those six bricks are held down by four small screws, and there's a driver in the box.</p>
+
+  <p>The bigger issue is power. A fader you can touch is a satisfying kind of agency, and it may be only a feeling. Okafor can push her brick back, but she doesn't set the budget, and a CFO looking at 61 boards of bricks sliding right will see a staffing plan whatever the terms of service say. Evidence for the method is thin as well: <a href="https://jalt.journals.publicknowledgeproject.org/index.php/jalt/article/download/379/321/1477">one systematic review</a> found that LEGO's effectiveness as a learning tool remains unclear, and Serious Play's facilitators <a href="https://wikipedia.com/wiki/Lego_Serious_Play">have a business interest in promoting it</a>. Larkfield's no-layoff pledge runs through 2027. Nobody I spoke with knows what the board will look like the day after it expires.</p>
+
+  <p>Still, the Plate gets one thing right that most AI rollouts don't. It treats a change to someone's job as something that should happen with them, in front of them, at a speed they can argue with.</p>
+
+  <p>The morning I left Larkfield, SUPPLIER VERIFICATION had crept right again. Okafor picked up the file the agent had prepared and read it for a while. Then she moved the brick about a centimeter toward TOGETHER and left it there. At the top of the board, the little enamel robot tipped its spoon.</p>
+
+  <p>"It's getting better," she said, and went to call the mill herself.</p>
+
+</div>
+
+<footer class="end gutter">
+  <div class="end-in">
+    <p class="kicker">End matter</p>
+    <h2>The research is real</h2>
+    <p class="end-lede">The story above is a work of speculative design. These are the sources behind it, checked November 4, 2026. The Teenage Engineering synthesizer report and the Polanyi, Hart and Moore, Bainbridge, Walsh and Ungson, and Gittell references rest on search results or partial access, so verify them before quoting further.</p>
+    <div class="sources">
+      <section><h3>Labor market and AI at work</h3><ul>
+        <li><a href="https://digitaleconomy.stanford.edu/publications/canaries-in-the-coal-mine">Brynjolfsson, Chandar and Chen, "Canaries in the Coal Mine?" Stanford Digital Economy Lab, revised August 2026</a></li>
+        <li><a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/3-skills-outlook">World Economic Forum, Future of Jobs Report 2025: Skills Outlook</a></li>
+        <li><a href="https://arxiv.org/pdf/2506.06576v3">Shao et al., "Future of Work with AI Agents," Stanford, 2026 revision</a></li>
+        <li><a href="https://www.nber.org/papers/w33641">Dell'Acqua et al., "The Cybernetic Teammate," NBER working paper 33641; Organization Science, 2026</a></li>
+        <li><a href="https://www.nber.org/papers/w20485">Autor, "Polanyi's Paradox and the Shape of Employment Growth," NBER working paper 20485, 2014</a></li>
+      </ul></section>
+      <section><h3>Roles, identity and change</h3><ul>
+        <li><a href="https://cdn.shopify.com/s/files/1/0813/8179/files/Wrzesniewski_Dutton_2001.pdf">Wrzesniewski and Dutton, "Crafting a Job," Academy of Management Review, 2001</a></li>
+        <li><a href="https://www.mentorcoach.com/wp-content/uploads/2021/02/Rudolph-Katz-Lavigne-Zacher-2017-job-crafting-meta-analysis-due-by-week-5.pdf">Rudolph et al., "Job Crafting: A Meta-Analysis," Journal of Vocational Behavior, 2017</a></li>
+        <li><a href="https://wpa.wharton.upenn.edu/content/academic-papers/self-reflective-titles/">Grant, Berg and Cable, "Job Titles as Identity Badges," Academy of Management Journal, 2014</a></li>
+        <li><a href="https://review.firstround.com/give-away-your-legos-and-other-commandments-for-scaling-startups/">First Round Review, "Give Away Your Legos," 2015</a></li>
+        <li><a href="https://www.theready.com/podcast/episodes/awwtr57-grief-identity-and-change-at-work-with-molly-graham">The Ready, "Your Company Wasn't Built to Grieve," September 2026</a></li>
+      </ul></section>
+      <section><h3>Knowledge and judgment</h3><ul>
+        <li><a href="https://fermatslibrary.com/p/028c7a80">Bainbridge, "Ironies of Automation," Automatica, 1983</a></li>
+        <li><a href="https://hart.scholars.harvard.edu/publications/theory-debt-based-inalienability-human-capital">Hart and Moore, "A Theory of Debt Based on the Inalienability of Human Capital," Quarterly Journal of Economics, 1994</a></li>
+        <li><a href="https://en.wikiquote.org/wiki/Organizational_memory">Walsh and Ungson, "Organizational Memory," Academy of Management Review, 1991</a>, with <a href="https://kmt.helpjuice.com/organizational-memory-and-knowledge">this summary of its retention facilities</a></li>
+        <li><a href="https://heller.brandeis.edu/relational-coordination/about-rc/theory-performance.html">Relational Coordination Collaborative, theory of performance, Brandeis</a></li>
+        <li><a href="https://www.nber.org/books-and-chapters/economics-artificial-intelligence-agenda/prediction-judgment-and-complexity-theory-decision-making-and-artificial-intelligence">Agrawal, Gans and Goldfarb, "Prediction, Judgment, and Complexity," NBER, 2018</a></li>
+      </ul></section>
+      <section><h3>The collaborators' real work</h3><ul>
+        <li><a href="https://glitchwire.pages.dev/news/teenage-engineerings-ep-136-ko-sidekick-turns-your-sampler-setup-into-a-modular/article.md">Glitchwire, Teenage Engineering EP-136 and EP Pegs, May 2026</a></li>
+        <li><a href="https://djmag.com/tech/teenage-engineering-announces-plans-stop-making-synthesisers">DJ Mag, Teenage Engineering's plan to stop making synthesizers, October 2026</a></li>
+        <li><a href="https://wikipedia.com/wiki/Lego_Serious_Play">Lego Serious Play overview, Wikipedia</a></li>
+        <li><a href="https://www.brothers-brick.com/tag/mindstorms/">The Brothers Brick, Mindstorms retirement</a></li>
+        <li><a href="https://jalt.journals.publicknowledgeproject.org/index.php/jalt/article/download/379/321/1477">Liang, "Investigating the use of LEGO bricks in education and training," Journal of Applied Learning &amp; Teaching, 2021</a></li>
+      </ul></section>
+    </div>
+    <p class="colophon"><b>Invented future.</b> This is a working-backwards concept piece. Not/Yet is an invented magazine, and the RC-1 Role Charter is not for sale. No company or person named here as a collaborator has seen, approved or endorsed it. Images are AI-generated.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var range = document.getElementById('brick-range');
+  var grow = document.getElementById('grow-btn');
+  var reset = document.getElementById('reset-btn');
+  var out = document.getElementById('readout');
+  var hasNew = false;
+  var STOP = 86;
+  function update() {
+    var v = Number(range.value);
+    if (!hasNew && v > STOP) { range.value = STOP; out.textContent = 'Held short of HANDED OFF. The stud is empty, so say what comes next.'; return; }
+    if (v >= 100) { out.textContent = 'Locked at HANDED OFF. The agent has this now, and you have something new.'; }
+    else if (v < 22) { out.textContent = 'Status: yours. You pulled it back, and you owe no one a reason.'; }
+    else if (v <= 66) { out.textContent = 'Status: shared with the agent.'; }
+    else { out.textContent = 'Status: proposed for hand-off. Nothing is final until you let it stay.'; }
+  }
+  range.addEventListener('input', update);
+  grow.addEventListener('click', function () {
+    hasNew = true; grow.disabled = true; grow.textContent = 'HARD CONVERSATIONS is on the GROW track';
+    out.textContent = 'New brick landed. DOCUMENT CHASING can now lock.';
+  });
+  reset.addEventListener('click', function () {
+    hasNew = false; grow.disabled = false; grow.textContent = 'Stamp a GROW brick: HARD CONVERSATIONS';
+    range.value = 46; update();
+  });
+})();
+</script>
+<script type="module">
+// Review comments (Overnote) load only with ?review=1, so regular readers never fetch them.
+if (new URLSearchParams(location.search).get('review') === '1') import('./js/review.js');
+</script>
+</body>
+</html>
